@@ -1,3 +1,11 @@
+provider "null" {
+  version = "~> 2.1"
+}
+
+provider "template" {
+  version = "~> 2.1"
+}
+
 provider "libvirt" {
   uri = var.libvirt_keyfile == "" ? var.libvirt_uri : "${var.libvirt_uri}?keyfile=${var.libvirt_keyfile}"
 }

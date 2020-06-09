@@ -1,6 +1,6 @@
 resource "libvirt_network" "network" {
   count  = var.network_name == "" ? 1 : 0
-  name   = "${var.stack_name}-network"
+  name   = "${var.stack_name}-net"
   mode   = var.network_mode
   domain = var.dns_domain
 

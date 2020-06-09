@@ -15,7 +15,7 @@ libvirt_keyfile = ""
 image_uri = ""
 
 # Identifier to make all your resources unique and avoid clashes with other users of this terraform project
-stack_name = "my-caasp-cluster"
+stack_name = "my-caasp"
 
 # CIDR of the network
 network_cidr = "10.17.0.0/22"
