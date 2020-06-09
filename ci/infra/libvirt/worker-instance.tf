@@ -76,6 +76,7 @@ resource "libvirt_domain" "worker" {
   count      = var.workers
   name       = "${var.stack_name}-worker-domain-${count.index}"
   memory     = var.worker_memory
+  machine    = "virt"
   vcpu       = var.worker_vcpu
   cloudinit  = element(libvirt_cloudinit_disk.worker.*.id, count.index)
   depends_on = [libvirt_domain.lb]
@@ -93,6 +94,20 @@ resource "libvirt_domain" "worker" {
     network_id     = var.network_name == "" ? libvirt_network.network.0.id : null
     hostname       = "${var.stack_name}-worker-${count.index}"
     wait_for_lease = true
+  }
+
+  firmware = "/usr/share/qemu/aavmf-aarch64-code.bin"
+
+  nvram {
+    # This is the file which will back the UEFI NVRAM content.
+    file = "/var/lib/libvirt/qemu/nvram/vm${count.index}_VARS.fd"
+
+    # This file needs to be provided by the user.
+    template = "/usr/share/qemu/aavmf-aarch64-vars.bin"
+  }
+
+  video {
+    type = "virtio"
   }
 
   graphics {
@@ -136,10 +151,9 @@ resource "null_resource" "worker_reboot" {
     }
 
     command = <<EOT
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $user@$host sudo reboot || :
+ssh -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -o KbdInteractiveAuthentication=no -o UserKnownHostsFile=/dev/null $user@$host sudo reboot || :
 # wait for ssh ready after reboot
-until nc -zv $host 22; do sleep 5; done
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -oConnectionAttempts=60 $user@$host /usr/bin/true
+ssh -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -o KbdInteractiveAuthentication=no -o UserKnownHostsFile=/dev/null -oConnectionAttempts=60 $user@$host /usr/bin/true
 EOT
 
   }

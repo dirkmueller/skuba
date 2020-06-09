@@ -123,6 +123,17 @@ resource "libvirt_domain" "lb" {
   memory    = var.lb_memory
   vcpu      = var.lb_vcpu
   cloudinit = libvirt_cloudinit_disk.lb.id
+  machine   = "virt"
+
+  firmware = "/usr/share/qemu/aavmf-aarch64-code.bin"
+
+  nvram {
+    # This is the file which will back the UEFI NVRAM content.
+    file = "/var/lib/libvirt/qemu/nvram/vm${count.index}_VARS.fd"
+
+    # This file needs to be provided by the user.
+    template = "/usr/share/qemu/aavmf-aarch64-vars.bin"
+  }
 
   cpu = {
     mode = "host-passthrough"
@@ -145,6 +156,10 @@ resource "libvirt_domain" "lb" {
   graphics {
     type        = "vnc"
     listen_type = "address"
+  }
+
+  video {
+    type = "virtio"
   }
 }
 

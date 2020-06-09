@@ -1,5 +1,7 @@
 module github.com/SUSE/skuba
 
+go 1.14
+
 require (
 	github.com/coreos/go-oidc v2.1.0+incompatible
 	github.com/pkg/errors v0.8.1
@@ -42,5 +44,3 @@ replace (
 	k8s.io/metrics => k8s.io/metrics v0.18.2
 	k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.18.2
 )
-
-go 1.13

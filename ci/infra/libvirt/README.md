@@ -1,15 +1,18 @@
 ## Introduction
 
-These terraform definitions are going to create the whole
-cluster on KVM via terraform-provider-libvirt.
+These terraform definitions are going to create the whole cluster on KVM via
+terraform-provider-libvirt.
 
 ## Prerequisites
 
-Follow instructions at https://github.com/dmacvicar/terraform-provider-libvirt#installing to install terraform-provider-libvirt.
+Follow instructions at
+https://github.com/dmacvicar/terraform-provider-libvirt#installing to install
+terraform-provider-libvirt.
 
 ## Deployment
 
-Use `terraform` to deploy the cluster. `-parallelism=1` used in apply command avoids potential concurrent issues in terraform-provider-libvirt.
+Use `terraform` to deploy the cluster. `-parallelism=1` used in apply command
+avoids potential concurrent issues in terraform-provider-libvirt.
 
 ```sh
 terraform init
@@ -18,20 +21,25 @@ terraform apply -parallelism=1
 
 ## Machine access
 
-It is important to have your public ssh key within the `authorized_keys`, this is done by `cloud-init` through a terraform variable called `authorized_keys`.
+It is important to have your public ssh key within the `authorized_keys`, this
+is done by `cloud-init` through a terraform variable called `authorized_keys`.
 
-All the instances have a `sles` user, password is not set. User can login only as `sles` user over SSH by using his private ssh key. The `sles` user can perform `sudo` without specifying a password.
+All the instances have a `sles` user, password is not set. User can login only
+as `sles` user over SSH by using his private ssh key. The `sles` user can
+perform `sudo` without specifying a password.
 
 ## Load balancer
 
-The kubernetes api-server instances running inside of the cluster are
-exposed by a load balancer managed by OpenStack.
+The kubernetes api-server instances running inside of the cluster are exposed
+by a load balancer created by terraform definitions.
 
 ## Customization
 
-IMPORTANT: Please define unique `stack_name` value in `terrafrom.tfvars` file to not interfere with other deployments.
+IMPORTANT: Please define unique `stack_name` value in `terrafrom.tfvars` file
+to not interfere with other deployments.
 
-Copy the `terraform.tfvars.example` to `terraform.tfvars` and provide reasonable values.
+Copy the `terraform.tfvars.example` to `terraform.tfvars` and provide
+reasonable values.
 
 ## Variables
 
