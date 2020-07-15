@@ -143,7 +143,7 @@ resource "null_resource" "worker_reboot" {
     }
 
     command = <<EOT
-export sshopts="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -oConnectionAttempts=60"
+export sshopts="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -oConnectionAttempts=60 -o PreferredAuthentications=publickey"
 if ! ssh $sshopts $user@$host 'sudo needs-restarting -r'; then
     ssh $sshopts $user@$host sudo reboot || :
     export delay=5

@@ -187,7 +187,7 @@ def check_pods_ready(kubectl, namespace=None, pods=[], node=None, statuses=['Run
     result = kubectl.run_kubectl(cmd)
     # get pods can return a list of items or a single pod
     pod_list = result.split(";")
-    for name,status in [ pod.split(":") for pod in pod_list if pod is not ""]:
+    for status in (pod.split(':')[1] for pod in pod_list if pod):
         if status not in statuses:
             return False
 

@@ -129,15 +129,15 @@ resource "null_resource" "master_reboot" {
     }
 
     command = <<EOT
-export sshopts="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -oConnectionAttempts=60"
-if ! ssh $sshopts $user@$host 'sudo needs-restarting -r'; then
+export sshopts="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -oConnectionAttempts=60 -o PreferredAuthentications=publickey"
+if ! ssh $sshopts $user@$host 'false'; then
     ssh $sshopts $user@$host sudo reboot || :
     export delay=5
     # wait for node reboot completed
-    while ! ssh $sshopts $user@$host 'sudo needs-restarting -r'; do
+    while ! ssh $sshopts $user@$host 'false'; do
         sleep $delay
         delay=$((delay+1))
-        [ $delay -gt 30 ] && exit 1
+        [ $delay -gt 30 ] && exit 66
     done
 fi
 EOT

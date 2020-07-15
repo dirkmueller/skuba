@@ -156,7 +156,7 @@ from test.utils import wait
 
 test_reboot(provision, platform):
     
-    platform.ssh_run("master", "0", "sudo reboot &")
+    platform.ssh_run("master", "0", "sudo reboot")
 
     wait(platform.ssh, "master", "0", "/bin/true", wait_delay=30, wait_timeout=10, wait_retries=3, wait_bakoff=30, wait_allow=(RuntimeError))
 ```
@@ -165,7 +165,7 @@ Alternatively, if we are not interested in the number of attempts, but is a fixe
 ```
 test_reboot(provision, platform):
     
-    platform.ssh_run("master", "0", "sudo reboot &")
+    platform.ssh_run("master", "0", "sudo reboot")
 
     wait(platform.ssh, "master", "0", "/bin/true", wait_delay=30, wait_timeout=10, wait_backoff=30, wait_elapsed=120, wait_allow=(RuntimeError))
 ```

@@ -23,7 +23,7 @@ def test_hard_reboot(deployment, platform, kubectl, role, node):
     """
     assert kubectl.get_num_nodes_by_role(role) > node
 
-    platform.ssh_run(role, node, 'sudo reboot &')
+    platform.ssh_run(role, node, 'sudo reboot')
 
     # Allow time for kubernetes to check node readiness and detect it is not
     # ready

@@ -38,12 +38,12 @@ packages:
     branch_repo: $BRANCH_REPO
 
 utils:
-  ssh_key: "$WORKSPACE/ci/infra/id_shared" 
+  ssh_key: "$WORKSPACE/ci/infra/id_shared"
   ssh_user: "sles"
   ssh_sock: "/tmp/$TERRAFORM_STACK_NAME/agent.sock"
 
-#openstack:
-#  openrc: "" #os.getenv("OPENSTACK_OPENRC")
+openstack:
+  openrc: "/home/dmueller/cloud/engcloud/cloud-openrc.sh" #os.getenv("OPENSTACK_OPENRC")
 
 #vmware:
 #  env_file: "" #os.getenv("VMWARE_ENV_FILE")

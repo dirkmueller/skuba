@@ -5,7 +5,9 @@ set -eo pipefail
 echo "Starting $0 script"
 
 SDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
-VENVDIR=${WORKSPACE:-~}/py3venv
+DEFAULTWORKSPACEPATH="$( cd "$(dirname "$0")/../../../" >/dev/null 2>&1 ; pwd -P )"
+export WORKSPACE=${WORKSPACE:-$DEFAULTWORKSPACEPATH}
+VENVDIR=${WORKSPACE:-}/py3venv
 export VENVDIR=${VENVDIR}
 PIP_VERBOSE=${PIP_VERBOSE:-"false"}
 
@@ -20,11 +22,10 @@ setup_python_env() {
   # Not calling to `pip3` directly because its shebang can exceed 128 characters
   # and this operation will fail. Check: https://github.com/pypa/pip/issues/1773
   if [[ $PIP_VERBOSE == "true" ]]; then
-    python -m pip install -r "${SDIR}/requirements.txt"
+    python3 -m pip install -r "${SDIR}/requirements.txt"
   else
-    python -m pip install -r "${SDIR}/requirements.txt" &>/dev/null
+    python3 -m pip install -r "${SDIR}/requirements.txt" &>/dev/null
   fi
-  
 }
 
 setup_python_env
